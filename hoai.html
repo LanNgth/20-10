@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>20/10 Vui Vẻ</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(180deg, #46c6cd 0%, #bdec98 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .phone {
+      width: 360px;
+      background: #cbe687;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(12, 24, 48, 0.15);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .title-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .title-wrap img {
+      width: 100%;
+      max-width: 250px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(255, 111, 216, 0.4);
+      object-fit: contain;
+    }
+
+    /* Lưới 12 button */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .img-btn {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: none;
+      border-radius: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #34495e;
+      cursor: pointer;
+      background: linear-gradient(135deg, #fff3b0, #fbc8f9);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .img-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
+
+    /* Khi ẩn, chỉ làm mờ và tắt click */
+    .hidden-btn {
+      visibility: hidden;
+    }
+
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      width: 260px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .popup-content p {
+      margin-bottom: 16px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .close-btn {
+      background: linear-gradient(135deg, #74b9ff, #a29bfe);
+      border: none;
+      color: white;
+      padding: 8px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .close-btn:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="title-wrap">
+      <img src="https://i.pinimg.com/736x/8b/eb/8c/8beb8c9ea041b92103b5b40d949d5a1f.jpg" alt="20/10 vui vẻ">
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- Popup -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <p id="popupText"></p>
+      <button class="close-btn" onclick="closePopup()">Đóng</button>
+    </div>
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    let currentBtn = null;
+
+    // Tạo 12 button
+    for (let i = 1; i <= 9; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'img-btn';
+      btn.textContent = i;
+      btn.onclick = () => showPopup(i, btn);
+      grid.appendChild(btn);
+    }
+
+    function showPopup(number, btn) {
+      currentBtn = btn;
+
+      // 🩷 Nội dung từng ô
+      let message = "";
+      switch (number) {
+        case 1: message = "💐 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô 100k nè"; break;
+        case 2: message = "🌸 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô 500k nè"; break;
+        case 3: message = "💐 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô có một bộ đồ xinh đẹp nè"; break;
+        case 4: message = "🌸 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô một thỏi son siêu xinh nè"; break;
+        case 5: message = "💐 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô 50k nè"; break;
+        case 6: message = "🌸 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô một CHỈ VÀNG (trong tương lai)"; break;
+        case 7: message = "💐 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô 200k"; break;
+        case 8: message = "🌸 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô có đồ ăn vặt nè"; break;
+        case 9: message = "💐 Chúc mẹ 20/10 vui vẻ! Mẹ đã quay trúng ô có máy mát xa nhó"; break;
+        default: message = "🌼 Chúc bạn có một ngày 20/10 tràn ngập niềm vui 💕";
+      }
+
+      document.getElementById('popupText').innerText = message;
+      document.getElementById('popup').style.display = 'flex';
+    }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+      if (currentBtn) {
+        // Ẩn button nhưng giữ nguyên vị trí trong grid
+        currentBtn.classList.add('hidden-btn');
+        currentBtn.disabled = true;
+        currentBtn = null;
+      }
+    }
+  </script>
+</body>
+</html>
